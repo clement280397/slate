@@ -2,9 +2,8 @@
 title: API Reference
 
 language_tabs:
-  - shell
-  - ruby
-  - python
+  - JSON
+
 
 toc_footers:
   - <a href='#'>Sign Up for a Developer Key</a>
@@ -16,71 +15,17 @@ includes:
 search: true
 ---
 
-# Introduction
+# Rail commander
 
-Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.
+Welcome to the Rail Commander API! You can use our API to access Rail Commander  API endpoints, which can get information on various trips, users, and statistics in our database.
 
-We have language bindings in Shell, Ruby, and Python! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
+Our API just respond some *JSON* content, depending on your request.
 
-This example API documentation page was created with [Slate](https://github.com/tripit/slate). Feel free to edit it and use it as a base for your own API's documentation.
 
-# Authentication
 
-> To authorize, use this code:
+# Users
 
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-```
-
-```shell
-# With shell, you can just pass the correct header with each request
-curl "api_endpoint_here"
-  -H "Authorization: meowmeowmeow"
-```
-
-> Make sure to replace `meowmeowmeow` with your API key.
-
-Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our [developer portal](http://example.com/developers).
-
-Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:
-
-`Authorization: meowmeowmeow`
-
-<aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
-</aside>
-
-# Kittens
-
-## Get All Kittens
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get()
-```
-
-```shell
-curl "http://example.com/api/kittens"
-  -H "Authorization: meowmeowmeow"
-```
-
+## Add a user
 > The above command returns JSON structured like this:
 
 ```json
@@ -91,78 +36,221 @@ curl "http://example.com/api/kittens"
     "breed": "calico",
     "fluffiness": 6,
     "cuteness": 7
-  },
-  {
-    "id": 2,
-    "name": "Max",
-    "breed": "unknown",
-    "fluffiness": 5,
-    "cuteness": 10
   }
 ]
 ```
-
-This endpoint retrieves all kittens.
-
+This endpoint makes you able to add a user:
 ### HTTP Request
 
-`GET http://example.com/api/kittens`
+`POST /users`
 
-### Query Parameters
-
-Parameter | Default | Description
---------- | ------- | -----------
-include_cats | false | If set to true, the result will also include cats.
-available | true | If set to false, the result will include kittens that have already been adopted.
-
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
-</aside>
-
-## Get a Specific Kitten
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```shell
-curl "http://example.com/api/kittens/2"
-  -H "Authorization: meowmeowmeow"
-```
-
+## Update a user
 > The above command returns JSON structured like this:
 
 ```json
-{
-  "id": 2,
-  "name": "Max",
-  "breed": "unknown",
-  "fluffiness": 5,
-  "cuteness": 10
-}
+[
+  {
+    "id": 1,
+    "name": "Fluffums",
+    "breed": "calico",
+    "fluffiness": 6,
+    "cuteness": 7
+  }
+]
 ```
-
-This endpoint retrieves a specific kitten.
-
-<aside class="warning">Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
-
+This endpoint makes you able to update an user:
 ### HTTP Request
 
-`GET http://example.com/kittens/<ID>`
+`PUT /users`
 
-### URL Parameters
+## Get a user
+> The above command returns JSON structured like this:
 
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to retrieve
+```json
+[
+  {
+    "id": 1,
+    "name": "Fluffums",
+    "breed": "calico",
+    "fluffiness": 6,
+    "cuteness": 7
+  }
+]
+```
+Retourne un JSON user
+Prend en paramètre l'adresse mail de l'utilisateur
+### HTTP Request
 
+`POST : /users/login`
+
+## Update user like
+> The above command returns JSON structured like this:
+
+```json
+[
+  {
+    "id": 1,
+    "name": "Fluffums",
+    "breed": "calico",
+    "fluffiness": 6,
+    "cuteness": 7
+  }
+]
+```
+En BDD cette valeur (number) est initialisée à 1.
+Prend en paramètre un json avec l'adresse mail de l'utilisateur et la valeur du like (1 ou 0).
+Met à jour cette valeur en BDD.
+### HTTP Request
+
+`PUT : /users/like`
+
+## Get user like
+> The above command returns JSON structured like this:
+
+```json
+[
+  {
+    "id": 1,
+    "name": "Fluffums",
+    "breed": "calico",
+    "fluffiness": 6,
+    "cuteness": 7
+  }
+]
+```
+Ne prend pas de paramètre
+Retourne la valeur dans un json (1 data suffit).
+Cette data est le pourcentage de like total.
+### HTTP Request
+
+`GET : /users/likes`
+
+## Get user email
+> The above command returns JSON structured like this:
+
+```json
+[
+  {
+    "id": 1,
+    "name": "Fluffums",
+    "breed": "calico",
+    "fluffiness": 6,
+    "cuteness": 7
+  }
+]
+```
+Prend en paramètre une adresse mail
+Retourne une adresse mail si l'email existe déjà en BDD
+Retourne false ou null si l'email n'existe pas (ton choix)
+### HTTP Request
+
+`GET : /user/email`
+
+## Get number of users
+> The above command returns JSON structured like this:
+
+```json
+[
+  {
+    "id": 1,
+    "name": "Fluffums",
+    "breed": "calico",
+    "fluffiness": 6,
+    "cuteness": 7
+  }
+]
+```
+Retourne le nombre total d'utilisateurs inscrits
+### HTTP Request
+
+`GET : /users/number`
+
+# Trips
+
+## Get All Trips
+> The above command returns JSON structured like this:
+
+```json
+[
+  {
+    "id": 1,
+    "name": "Fluffums",
+    "breed": "calico",
+    "fluffiness": 6,
+    "cuteness": 7
+  }
+]
+```
+Retourne un JSON avec la liste des voyages
+### HTTP Request
+`GET : /trips`
+
+## Get most visited town
+> The above command returns JSON structured like this:
+
+```json
+[
+  {
+    "id": 1,
+    "name": "Fluffums",
+    "breed": "calico",
+    "fluffiness": 6,
+    "cuteness": 7
+  }
+]
+```
+Ne prend pas de paramètres.
+Retourne une valeur au format JSON (cle = mostVisitedTown).
+Contient une string avec la ville la plus fréquentée.
+Calcul : +1 pour chaque appel de cette ville en tant que ville de destination dans la liste des tickets.
+
+
+### HTTP Request
+`GET : /trips/most-visited-town`
+
+## Get most bought travel
+> The above command returns JSON structured like this:
+
+```json
+[
+  {
+    "id": 1,
+    "name": "Fluffums",
+    "breed": "calico",
+    "fluffiness": 6,
+    "cuteness": 7
+  }
+]
+```
+Ne prend pas de paramètres.
+Retourne une valeur au format JSON (cle = mostBoughtTravel).
+Contient une string avec le voyage le plus acheté. (Ville de départ - Ville d'arrivée).
+Calcul : +1 pour chaque appel de ce voyage dans la liste des tickets.
+
+
+### HTTP Request
+`GET : /trips/most-bought-travel`
+
+# Carts
+
+## Add a cart
+> The above command returns JSON structured like this:
+
+```json
+[
+  {
+    "id": 1,
+    "name": "Fluffums",
+    "breed": "calico",
+    "fluffiness": 6,
+    "cuteness": 7
+  }
+]
+```
+Ajoute un achat ou plusieurs achats en BDD
+Prend en paramètre un JSON qui contient :
+1. L'email de l'utilisateur (UNIQUE)
+2. Un tableau avec la référence des voyages (ID/UNIQUE) et la quantité
+
+### HTTP Request
+`POST : /cart`
